@@ -55,10 +55,12 @@ class App extends Component {
     this.fetchData(url)
   }
 
-  
-  onRowSelect = row => (
+
+  onRowSelect = (row, e) => {
+    e.target.closest('tbody').querySelectorAll('tr').forEach(el => el.style.background='#ffffff');
+    e.target.closest('tr').style.background='#ffcccc';
     this.setState({row})
-  )
+  }
 
   pageChangeHandler = ({selected}) => (
     this.setState({currentPage: selected})
@@ -86,7 +88,7 @@ class App extends Component {
    }
     return result
   }
-  
+
 
   render() {
     const pageSize = 50;
@@ -99,7 +101,7 @@ class App extends Component {
 
       )
     }
-   
+
     const filteredData = this.getFilteredData();
     // debugger
     const pageCount = Math.ceil(filteredData.length / pageSize)
@@ -107,11 +109,11 @@ class App extends Component {
     return (
       <div className="container">
       {
-        this.state.isLoading 
+        this.state.isLoading
         ? <Loader />
         : <React.Fragment>
             <TableSearch onSearch={this.searchHandler}/>
-            <Table 
+            <Table
               data={displayData}
               onSort={this.onSort}
               sort={this.state.sort}
